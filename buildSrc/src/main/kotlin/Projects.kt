@@ -15,14 +15,16 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import wtf.emulator.EwExtension
 
 fun Project.setupLibraryModule(
     name: String?,
     buildConfig: Boolean = false,
     publish: Boolean = false,
     document: Boolean = publish,
+    instrumentationTest: Boolean = true,
     block: LibraryExtension.() -> Unit = {}
-) = setupBaseModule<LibraryExtension>(name) {
+) = setupBaseModule<LibraryExtension>(name, instrumentationTest) {
     libraryVariants.all {
         generateBuildConfigProvider?.configure { enabled = buildConfig }
     }
@@ -64,8 +66,21 @@ fun Project.setupAppModule(
 
 private inline fun <reified T : BaseExtension> Project.setupBaseModule(
     name: String?,
+    instrumentationTest: Boolean = false,
     crossinline block: T.() -> Unit = {}
 ) = extensions.configure<T>("android") {
+    if (instrumentationTest) {
+        apply(plugin = "wtf.emulator.gradle")
+        extensions.configure<EwExtension> {
+            devices.set(listOf(
+                mapOf("model" to "NexusLowRes", "version" to 27),
+                mapOf("model" to "NexusLowRes", "version" to 23),
+                mapOf("model" to "NexusLowRes", "version" to 31),
+            ))
+            sideEffects.set(true) // TODO remove when ready for PR
+        }
+    }
+
     namespace = name
     compileSdkVersion(project.compileSdk)
     defaultConfig {

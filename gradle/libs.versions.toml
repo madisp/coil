@@ -18,6 +18,7 @@ ktlint = { id = "org.jmailen.kotlinter", version = "3.12.0" }
 gradlePlugin-android = "com.android.tools.build:gradle:7.3.0"
 gradlePlugin-kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
 gradlePlugin-mavenPublish = "com.vanniktech:gradle-maven-publish-plugin:0.22.0"
+gradlePlugin-emulatorwtf = "wtf.emulator:gradle-plugin:0.0.13"
 
 accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version = "0.25.1" }
 

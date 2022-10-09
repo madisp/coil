@@ -5,7 +5,7 @@ plugins {
     id("kotlin-android")
 }
 
-setupLibraryModule(name = "coil.bom", publish = true, document = false)
+setupLibraryModule(name = "coil.bom", publish = true, document = false, instrumentationTest = false)
 
 dependencies {
     constraints {
